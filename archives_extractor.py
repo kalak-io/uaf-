@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import argparse
+import os
 
 ARCHIVERS = {
              '.arj': 'arj e',
@@ -34,8 +35,25 @@ ARCHIVERS = {
             }
 
 
+def execute_(command_line):
+    os.system(command_line)
+
+
+def build_command_line(command, f):
+    command_line = '{} {}'.format(command, f)
+    return command_line
+
+
 def archives_extractor(f):
-    print(f)
+    extension = '.{}'.format(f.split('.', 1)[1])
+    if extension in list(ARCHIVERS.keys()):
+        command = ARCHIVERS[extension]
+        if command:
+            execute_(build_command_line(command, f))
+        else:
+            print("error: program not found to extract: {}".format(extension))
+    else:
+        print("error: extension not found: {}".format(extension))
 
 
 def main():
