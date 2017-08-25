@@ -10,12 +10,12 @@ Command extract all type of archives in your console
 ### Create alias in your shell configuration file
 #### Bash
 ```sh
-   echo "alias extract="python ~/Documents/projects/personal/archives_extractor/archives_extractor.py -f" >> ~/.bashrc
+   echo "alias extract="python ~/.config/archives_extractor.py -f" >> ~/.bashrc
    source ~/.bashrc
 ```
 #### Zsh
 ```sh
-   echo "alias extract="python ~/Documents/projects/personal/archives_extractor/archives_extractor.py -f" >> ~/.zshrc
+   echo "alias extract="python ~/.config/archives_extractor.py -f" >> ~/.zshrc
    source ~/.zshrc
 ```
 
