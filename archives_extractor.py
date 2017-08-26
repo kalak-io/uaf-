@@ -14,6 +14,7 @@ ARCHIVERS = {
              '.exe': '7z e',
              '.gz': 'gzip -d',
              '.iso': '7z x',
+             '.img.gz': 'gunzip',
              '.lzh': '7z x',
              '.msi': '7z x',
              '.rar': 'unrar x',
