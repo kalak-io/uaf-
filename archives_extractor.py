@@ -36,8 +36,21 @@ ARCHIVERS = {
             }
 
 
-def execute_(command_line):
-    os.system(command_line)
+def identify_extension(f):
+    try:
+        extension = '.{}'.format(f.split('.', 1)[1])
+    except:
+        print('error: no extension for the file: {}'.format(f))
+    else:
+        return extension
+
+
+def known_extension(extension):
+    if extension in list(ARCHIVERS.keys()):
+        return True
+    else:
+        print("error: extension not found: {}".format(extension))
+        return False
 
 
 def build_command_line(command, f):
@@ -45,19 +58,22 @@ def build_command_line(command, f):
     return command_line
 
 
+def execute_(command_line):
+    os.system(command_line)
+
+
 def archives_extractor(f):
-    extension = '.{}'.format(f.split('.', 1)[1])
-    if extension in list(ARCHIVERS.keys()):
+    extension = identify_extension(f)
+    if extension and known_extension(extension):
         command = ARCHIVERS[extension]
         if command:
             execute_(build_command_line(command, f))
         else:
             print("error: program not found to extract: {}".format(extension))
-    else:
-        print("error: extension not found: {}".format(extension))
 
 
 def main():
+    args.files = list(set(args.files))
     list(map(archives_extractor, args.files))
 
 
