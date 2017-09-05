@@ -5,6 +5,10 @@ import argparse
 import os
 
 ARCHIVERS = {
+             '.img.gz': 'gunzip',
+             '.tar.bz2': 'tar -jxvf',
+             '.tar.gz': 'tar -zxvf',
+             '.tar.xz': 'tar xf',
              '.arj': 'arj e',
              '.bz2': 'bzip2 -d',
              '.cab': 'cabextract -d',
@@ -14,15 +18,11 @@ ARCHIVERS = {
              '.exe': '7z e',
              '.gz': 'gzip -d',
              '.iso': '7z x',
-             '.img.gz': 'gunzip',
              '.lzh': '7z x',
              '.msi': '7z x',
              '.rar': 'unrar x',
              '.rpm': 'rpm2cpio',
              '.tar': 'tar -xvf',
-             '.tar.bz2': 'tar -jxvf',
-             '.tar.gz': 'tar -zxvf',
-             '.tar.xz': 'tar xf',
              '.tbz': 'tar -jxvf',
              '.tbz2': 'tar -jxvf',
              '.tgz': 'tar -xvzf',
@@ -37,20 +37,11 @@ ARCHIVERS = {
 
 
 def identify_extension(f):
-    try:
-        extension = '.{}'.format(f.split('.', 1)[1])
-    except:
-        print('error: no extension for the file: {}'.format(f))
-    else:
-        return extension
-
-
-def known_extension(extension):
-    if extension in list(ARCHIVERS.keys()):
-        return True
-    else:
-        print("error: extension not found: {}".format(extension))
-        return False
+    for extension in ARCHIVERS.keys():
+        if extension in f:
+            return extension
+    print("error: file extension not found: {}".format(f))
+    return None
 
 
 def build_command_line(command, f):
@@ -64,7 +55,7 @@ def execute_(command_line):
 
 def archives_extractor(f):
     extension = identify_extension(f)
-    if extension and known_extension(extension):
+    if extension:
         command = ARCHIVERS[extension]
         if command:
             execute_(build_command_line(command, f))
