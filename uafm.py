@@ -8,7 +8,7 @@ from shutil import which
 
 from operator import itemgetter
 
-from config import TOOLS
+from constants import CONFIG_MIME_TYPE
 
 import pathlib
 
@@ -26,7 +26,7 @@ def uafm():
 
 def _process(name, sources, dest, clean):
     mime_type = MIME.guess_type(dest)[0] if name == COMPACT else MIME.guess_type(sources[0])[0]
-    package, options, pattern = itemgetter("package", "options", "pattern")(TOOLS[mime_type][name])
+    package, options, pattern = itemgetter("package", "options", "pattern")(CONFIG_MIME_TYPE[mime_type][name])
     if which(package) is None:
         sys.exit(f'command not found: {package}')
     command_line = pattern.format(package=package, options=options, sources=' '.join(map(str, sources)), destination=dest)

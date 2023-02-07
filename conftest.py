@@ -1,14 +1,14 @@
 import pytest
 from pathlib import Path
 
-from config import TOOLS
+from constants import CONFIG_MIME_TYPE
 
 
 DEFAULT_FILENAME = "file.txt"
 DEFAULT_ARCHIVE_NAME = "archive"
 DEFAULT_CONTENT = "content"
 
-ARCHIVE_PARAMS = list(map(lambda value: value["suffix"], TOOLS.values()))
+ARCHIVE_PARAMS = list(map(lambda value: value["suffix"], CONFIG_MIME_TYPE.values()))
 
 @pytest.fixture
 def make_file(tmp_path):
