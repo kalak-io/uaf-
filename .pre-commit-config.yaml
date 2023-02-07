@@ -15,5 +15,17 @@ repos:
     -   id: detect-private-key
     -   id: fix-encoding-pragma
     -   id: requirements-txt-fixer
-# -   repo: flake8
-# -   repo: black
+
+-   repo: https://github.com/ambv/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        language: python
+        stages: [commit, push, manual]
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        language: python
+        stages: [commit, push, manual]
