@@ -24,9 +24,9 @@ def uafm():
     pass
 
 
-def _process(name, sources, dest, clean):
-    mime_type = MIME.guess_type(dest)[0] if name == COMPACT else MIME.guess_type(sources[0])[0]
-    package, options, pattern = itemgetter("package", "options", "pattern")(CONFIG_MIME_TYPE[mime_type][name])
+def _process(cli_command, sources, dest, clean):
+    mime_type = MIME.guess_type(dest) if cli_command == COMPACT else MIME.guess_type(sources[0])
+    package, options, pattern = itemgetter("package", "options", "pattern")(CONFIG_MIME_TYPE[mime_type][cli_command])
     if which(package) is None:
         sys.exit(f'command not found: {package}')
     command_line = pattern.format(package=package, options=options, sources=' '.join(map(str, sources)), destination=dest)
