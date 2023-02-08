@@ -20,6 +20,14 @@ class TestCompactCommand:
         assert result.exit_code == 2
         assert "Path 'file.txt' does not exist." in result.output
 
+  def test_compact_with_wrong_dest(self, tmp_path, make_file):
+      runner = CliRunner()
+      with runner.isolated_filesystem(temp_dir=tmp_path):
+        created_file = make_file()
+        result = runner.invoke(cli, [COMPACT, created_file, '--dest', f'/unknown/path/{DEFAULT_ARCHIVE_NAME}'])
+        assert result.exit_code == 1
+        assert isinstance(result.exception, TypeError)
+
 
   def test_default_compact(self, tmp_path, files):
       runner = CliRunner()
