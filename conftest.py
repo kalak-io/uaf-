@@ -8,7 +8,7 @@ DEFAULT_FILENAME = "file.txt"
 DEFAULT_ARCHIVE_NAME = "archive"
 DEFAULT_CONTENT = "content"
 
-ARCHIVE_PARAMS = list(map(lambda value: value["suffix"], CONFIG_MIME_TYPE.values()))
+AVAILABLE_EXTENSIONS = [suffix for suffixes in map(lambda value: value["suffix"], CONFIG_MIME_TYPE.values()) for suffix in suffixes]
 
 @pytest.fixture
 def make_file(tmp_path):
@@ -33,6 +33,6 @@ def files(make_file, request):
     return files
 
 
-@pytest.fixture(params=ARCHIVE_PARAMS)
+@pytest.fixture(params=AVAILABLE_EXTENSIONS)
 def archive(tmp_path, request):
     return tmp_path / Path(f"{DEFAULT_ARCHIVE_NAME}{request.param}")
