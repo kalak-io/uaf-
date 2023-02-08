@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 import sys
+import pathlib
 import subprocess
 import mimetypes
-import click
 from shutil import which
 
+import click
 from operator import itemgetter
 
+from utils import validate_filepath
 from constants import CONFIG_MIME_TYPE
-
-import pathlib
 
 
 COMPACT = "compact"
@@ -42,6 +42,8 @@ def _rm_sources(sources):
 @click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE_NAME) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def compact(sources, dest, clean):
+    if not validate_filepath(dest):
+        raise click.ClickException(f"{dest}: Cannot {COMPACT}: No such filepath to destination")
     _process(COMPACT, sources, dest, clean)
 
     if (clean):
@@ -50,9 +52,11 @@ def compact(sources, dest, clean):
 
 @uafm.command(name=EXTRACT)
 @click.argument('sources', nargs=-1, type=click.Path(exists=True), required=True) # , help='List of elements to extract'
-@click.option('--dest', nargs=1, type=click.Path(exists=True)) # , help="Path where store the output"
+@click.option('--dest', nargs=1, type=click.Path(exists=False)) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def extract(sources, dest, clean):
+    if not validate_filepath(dest):
+        raise click.ClickException(f"{dest}: Cannot {EXTRACT}: No such filepath to destination")
     for source in sources:
         _process(EXTRACT, [source], dest, clean)
     
