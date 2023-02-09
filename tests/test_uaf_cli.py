@@ -6,7 +6,7 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from uafm import cli, COMPACT, EXTRACT,DEFAULT_ARCHIVE_NAME
+from uaf_cli import cli, COMPACT, EXTRACT,DEFAULT_ARCHIVE_NAME
 
 class TestCompactCommand:
   def test_compact_without_sources(self, tmp_path):
