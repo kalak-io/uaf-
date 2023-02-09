@@ -42,8 +42,9 @@ def _rm_sources(sources):
 @click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE_NAME) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def compact(sources, dest, clean):
-    if not validate_filepath(dest):
-        raise click.ClickException(f"{dest}: Cannot {COMPACT}: No such filepath to destination")
+    # if not validate_filepath(dest):
+    #     raise click.ClickException(f"{dest}: Cannot {COMPACT}: No such filepath to destination")
+    # Error with this check -> a file is created
     _process(COMPACT, sources, dest, clean)
 
     if (clean):
@@ -55,8 +56,10 @@ def compact(sources, dest, clean):
 @click.option('--dest', nargs=1, type=click.Path(exists=False)) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def extract(sources, dest, clean):
-    if not validate_filepath(dest):
-        raise click.ClickException(f"{dest}: Cannot {EXTRACT}: No such filepath to destination")
+    # if not validate_filepath(dest):
+    #     raise click.ClickException(f"{dest}: Cannot {EXTRACT}: No such filepath to destination")
+    # Error with this check -> a file is created
+
     for source in sources:
         _process(EXTRACT, [source], dest, clean)
     
