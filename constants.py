@@ -43,7 +43,7 @@ TAR_BZ = {
 ZIP = {
     "compact": {
         "package": "zip",
-        "options": "-d",
+        "options": "",
         "pattern": "{package} {options} {destination} {sources}"
     },
     "extract": {
