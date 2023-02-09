@@ -20,7 +20,7 @@ DEFAULT_ARCHIVE_NAME = "archive.tar"
 MIME = mimetypes.MimeTypes()
 
 @click.group()
-def uafm():
+def uaf_cli():
     pass
 
 
@@ -38,7 +38,7 @@ def _rm_sources(sources):
     subprocess.run(["rm", "-r", *sources], check=True, shell=True)
 
 
-@uafm.command(name=COMPACT)
+@uaf_cli.command(name=COMPACT)
 @click.argument('sources', nargs=-1, type=click.Path(exists=True), required=True) # , help='List of elements to compact'
 @click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE_NAME) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
@@ -52,7 +52,7 @@ def compact(sources, dest, clean):
         _rm_sources(sources)
 
 
-@uafm.command(name=EXTRACT)
+@uaf_cli.command(name=EXTRACT)
 @click.argument('sources', nargs=-1, type=click.Path(exists=True), required=True) # , help='List of elements to extract'
 @click.option('--dest', nargs=1, type=click.Path(exists=False)) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
@@ -68,7 +68,7 @@ def extract(sources, dest, clean):
         _rm_sources(sources)
 
 
-@click.command(cls=click.CommandCollection, sources=[uafm])
+@click.command(cls=click.CommandCollection, sources=[uaf_cli])
 def cli():
     pass
 
