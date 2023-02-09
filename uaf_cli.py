@@ -26,6 +26,7 @@ def uafm():
 
 def _process(cli_command, sources, dest, clean):
     mime_type = MIME.guess_type(dest) if cli_command == COMPACT else MIME.guess_type(sources[0])
+    print(mime_type) # let's it while inventory all archivers
     package, options, pattern = itemgetter("package", "options", "pattern")(CONFIG_MIME_TYPE[mime_type][cli_command])
     if which(package) is None:
         sys.exit(f'command not found: {package}')
