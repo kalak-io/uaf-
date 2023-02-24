@@ -1,5 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
+import mimetypes
+
+
+COMPACT = "compact"
+EXTRACT = "extract"
+
+MIME = mimetypes.MimeTypes()
+
+DEFAULT_FILENAME = "file.txt"
+DEFAULT_ARCHIVE_NAME = "archive"
+DEFAULT_ARCHIVE_EXTENSION = ".tar"
+DEFAULT_ARCHIVE = f"{DEFAULT_ARCHIVE_NAME}{DEFAULT_ARCHIVE_EXTENSION}"
+DEFAULT_CONTENT = "content"
+
 
 TAR = {
         "compact": {
@@ -10,7 +24,7 @@ TAR = {
         "extract": {
             "package": "tar",
             "options": "xvf",
-            "pattern": "{package} {options} {sources}"
+            "pattern": "{package} {options} {sources} -C {destination}"
         },
         "suffix": [".tar", ".tar.xz"]
     }
@@ -24,7 +38,7 @@ TAR_GZ = {
         "extract": {
             "package": "tar",
             "options": "xvzf",
-            "pattern": "{package} {options} {sources}"
+            "pattern": "{package} {options} {sources} -C {destination}"
         },
         "suffix": [".tar.gz", ".tgz"]
     }
@@ -38,7 +52,7 @@ TAR_BZ = {
         "extract": {
             "package": "tar",
             "options": "xvjf",
-            "pattern": "{package} {options} {sources}"
+            "pattern": "{package} {options} {sources} -C {destination}"
         },
         "suffix": [".tar.tbz2", ".tar.bz2"]
     }
@@ -65,3 +79,4 @@ CONFIG_MIME_TYPE = {
     ('application/zip', None): ZIP
 }
  
+AVAILABLE_EXTENSIONS = [suffix for suffixes in map(lambda value: value["suffix"], CONFIG_MIME_TYPE.values()) for suffix in suffixes]

@@ -1,26 +1,22 @@
 #!/usr/bin/env python
 # coding: utf-8
+from shutil import make_archive
 
 import pytest
 from pathlib import Path
+from os import path
 
-from constants import CONFIG_MIME_TYPE
+from constants import DEFAULT_FILENAME, DEFAULT_CONTENT, AVAILABLE_EXTENSIONS, DEFAULT_ARCHIVE_NAME, DEFAULT_ARCHIVE_EXTENSION
 
-
-DEFAULT_FILENAME = "file.txt"
-DEFAULT_ARCHIVE_NAME = "archive"
-DEFAULT_CONTENT = "content"
-
-AVAILABLE_EXTENSIONS = [suffix for suffixes in map(lambda value: value["suffix"], CONFIG_MIME_TYPE.values()) for suffix in suffixes]
 
 @pytest.fixture
 def make_file(tmp_path):
     def make(
-        name: str = DEFAULT_FILENAME,
+        filename: str = DEFAULT_FILENAME,
         content: str = DEFAULT_CONTENT,
         **rest
     ):
-        file = tmp_path / Path(name)
+        file = tmp_path / Path(filename)
         file.write_text(content)
         return file
 
@@ -31,7 +27,7 @@ def make_file(tmp_path):
 def files(make_file, request):
     files = []
     for i in range(request.param):
-        file = make_file(name=f'{i}_{DEFAULT_FILENAME}')
+        file = make_file(filename=f'{i}_{DEFAULT_FILENAME}')
         files.append(file)
     return files
 
@@ -39,3 +35,15 @@ def files(make_file, request):
 @pytest.fixture(params=AVAILABLE_EXTENSIONS)
 def archive(tmp_path, request):
     return tmp_path / Path(f"{DEFAULT_ARCHIVE_NAME}{request.param}")
+
+
+@pytest.fixture
+def create_archive(tmp_path, files):
+    def make(
+        filename: str = DEFAULT_ARCHIVE_NAME,
+        extension: str = DEFAULT_ARCHIVE_EXTENSION,
+        **rest
+    ):
+        archive = make_archive(tmp_path / Path(filename), extension[1:], tmp_path)
+        return archive
+    return make

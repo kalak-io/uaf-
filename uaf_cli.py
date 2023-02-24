@@ -3,21 +3,14 @@
 import sys
 import pathlib
 import subprocess
-import mimetypes
 from shutil import which
 
 import click
 from operator import itemgetter
 
 from utils import validate_filepath
-from constants import CONFIG_MIME_TYPE
+from constants import CONFIG_MIME_TYPE, COMPACT, EXTRACT, DEFAULT_ARCHIVE, MIME
 
-
-COMPACT = "compact"
-EXTRACT = "extract"
-
-DEFAULT_ARCHIVE_NAME = "archive.tar"
-MIME = mimetypes.MimeTypes()
 
 @click.group()
 def uaf_cli():
@@ -26,7 +19,6 @@ def uaf_cli():
 
 def _process(cli_command, sources, dest, clean):
     mime_type = MIME.guess_type(dest) if cli_command == COMPACT else MIME.guess_type(sources[0])
-    print(mime_type) # let's it while inventory all archivers
     package, options, pattern = itemgetter("package", "options", "pattern")(CONFIG_MIME_TYPE[mime_type][cli_command])
     if which(package) is None:
         sys.exit(f'command not found: {package}')
@@ -40,7 +32,7 @@ def _rm_sources(sources):
 
 @uaf_cli.command(name=COMPACT)
 @click.argument('sources', nargs=-1, type=click.Path(exists=True), required=True) # , help='List of elements to compact'
-@click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE_NAME) # , help="Path where store the output"
+@click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def compact(sources, dest, clean):
     # if not validate_filepath(dest):
