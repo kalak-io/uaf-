@@ -35,9 +35,6 @@ def _rm_sources(sources):
 @click.option('--dest', nargs=1, type=click.Path(exists=False), default=DEFAULT_ARCHIVE) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def compact(sources, dest, clean):
-    # if not validate_filepath(dest):
-    #     raise click.ClickException(f"{dest}: Cannot {COMPACT}: No such filepath to destination")
-    # Error with this check -> a file is created
     _process(COMPACT, sources, dest, clean)
 
     if (clean):
@@ -49,10 +46,6 @@ def compact(sources, dest, clean):
 @click.option('--dest', nargs=1, type=click.Path(exists=False)) # , help="Path where store the output"
 @click.option('--clean', type=bool, default=False) # , help="Clean source after operation"
 def extract(sources, dest, clean):
-    # if not validate_filepath(dest):
-    #     raise click.ClickException(f"{dest}: Cannot {EXTRACT}: No such filepath to destination")
-    # Error with this check -> a file is created
-
     for source in sources:
         _process(EXTRACT, [source], dest, clean)
     
@@ -66,19 +59,4 @@ def cli():
 
 
 if __name__ == '__main__':
-    # Universal Archive Files Manager (UAFM)
-    # program_name: uafm
-    # Usage:
-    # uafm <archive> | uafm extract <archive> => extract/decompress an archive in the current directory (pwd)
-    # uafm <archive> --dest <dir> | uafm extract <archive> --dest <dir> => extract/decompress an archive in a specified directory
-        # - if the path to the specified directory doesn't exist, create it
-    # uafm compact <files> => archive/compress a list of files in the current directory (pwd)
-    # uafm compact <files> --dest <dir> => archive/compress a list of files in the current directory (pwd)
-    
-    # Prototype
-    # <program_name> <command> <sources> <destination>
-    # program_name = uafm
-    # command: ["extract", "compact"]
-    # sources: with extract command an archive ; with compact command a list of files
-    # destination: with extract command an archive, path where store the output ; with compact operation the path of the creating archive
     cli()
