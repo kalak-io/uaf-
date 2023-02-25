@@ -27,7 +27,7 @@ def _process(cli_command, sources, dest, clean):
 
 
 def _rm_sources(sources):
-    subprocess.run(["rm", "-r", *sources], check=True, shell=True)
+    subprocess.run(["rm", "-rf", *sources], check=True, shell=True)
 
 
 @uaf_cli.command(name=COMPACT)
