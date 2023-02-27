@@ -92,34 +92,22 @@ class TestExtractCommand:
       assert len(ls) == 1
       result = runner.invoke(cli, [EXTRACT, created_archive])
       assert result.exit_code == 0
-      ls = listdir('.')
-      assert len(ls) == len(files)
+      ls = listdir(tmp_path)
+      assert len(ls) == len(files) + 1
 
   def test_default_extract_with_destination(self, tmp_path, files, create_archive):
     runner = CliRunner()
     with runner.isolated_filesystem():
       ls = listdir(tmp_path)
-      print("beginning")
-      print(ls)
       assert len(ls) == len(files)
       created_archive = create_archive()
       ls = listdir(tmp_path)
-      print("creating archive")
-      print(ls)
       assert len(ls) == len(files) + 1
       for file in files:
         remove(file)
       ls = listdir(tmp_path)
-      print("after removing")
-      print(ls)
       assert len(ls) == 1
-      print("created_archive")
-      print(created_archive)
-      print("tmp_path")
-      print(tmp_path)
       result = runner.invoke(cli, [EXTRACT, created_archive, '--dest', tmp_path])
       assert result.exit_code == 0
       ls = listdir(tmp_path)
-      print("after extracting")
-      print(ls)
       assert len(ls) == len(files) + 1
