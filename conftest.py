@@ -44,6 +44,6 @@ def create_archive(tmp_path, files):
         extension: str = DEFAULT_ARCHIVE_EXTENSION,
         **rest
     ):
-        archive = make_archive(tmp_path / Path(filename), extension[1:], tmp_path)
+        archive = make_archive(tmp_path / Path(filenqame), extension[1:], tmp_path)
         return archive
     return make
